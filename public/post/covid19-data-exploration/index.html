@@ -64,7 +64,7 @@
   <title>clock</title>
   <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
 </svg>
-          3 min read
+          6 min read
         </div><div>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
   <title>tag</title>
@@ -159,6 +159,84 @@ ggplot(confirmedCasesSelected, aes(x = Date, y = cumulative_cases, colour=countr
   scale_y_log10(limits = c(1,2e5))+
   theme(legend.position = &quot;none&quot;, legend.title = element_blank())</code></pre>
 <p><img src="/post/2020-03-24-covid19-data-exploration_files/figure-html/unnamed-chunk-7-1.png" width="960" /></p>
+</div>
+<div id="daily-incremental-incident-cases-epidemic-curves" class="section level4">
+<h4>Daily incremental incident cases (Epidemic Curves)</h4>
+<p>Let’s look at the daily incremental incidence.
+The curve, that is visualized as bar chart here is known as the epidemic curve and shows the new confirmed cases on a daily basis. The distribution of incidences over time, provides an indication of where the outbreak is in its course. Is the number of new cases still increasing or has the outbreak already peaked? As the the outbreak spreads, the shape of the epi curve might show overlapping waves of cases or new subsequent outbreaks. A plateau in the curve of daily new incidences in some countries could be expected as the result of the social distancing measures that are introduced in european countries around the middle of March (starting from 16th to 20th of March).</p>
+<pre class="r"><code>title&lt;-paste(&quot;COVID-19 daily incident confirmed cases\n data from Johns Hopkins University: &quot;, dateDownloaded)
+caption&lt;-&quot;Source: Johns Hopkins CSSE Novel coronavirus COVID-19 (2019-nCoV)\n data repository: https://github.com/CSSEGISandData/COVID-19&quot;
+
+ggplot(confirmedCasesSelected, aes(x = Date, y = incident_cases))+ 
+  geom_col(color=&quot;blue&quot;, alpha=0.5)+
+  #geom_line(color=&quot;blue&quot;,alpha=0.4, size=.3) + 
+  #geom_point(color=&quot;blue&quot;, alpha=0.5, size=2)+
+  facet_wrap(country_region ~ ., scale = &quot;free_y&quot;)+
+  labs(y = &quot;Daily incident confirmed cases&quot;, title = title, 
+       subtitle = &quot;(Note: different y-axis scales)&quot;, caption = caption)+
+  theme(legend.position = &quot;none&quot;, legend.title = element_blank())</code></pre>
+<p><img src="/post/2020-03-24-covid19-data-exploration_files/figure-html/unnamed-chunk-8-1.png" width="960" /></p>
+</div>
+</div>
+<div id="doubling-times" class="section level3">
+<h3>Doubling Times</h3>
+<div id="time-it-requires-the-amount-of-confirmed-cases-doubles" class="section level4">
+<h4>(Time it requires the amount of confirmed cases doubles)</h4>
+<p>The following plot shows developments of doubling times for various countries in europe. Increasing doubling times meaning a significant slowing down of the spreading of disease and must be considered as a result of social distancing and quaratine measures. There is no other measure as e.g. vaccination at this time. Also the exponential growth is not slowed down by the increasing amount of already recovered people. This effect may play a role when &gt;10%…20%…30% of the population have become immune.</p>
+<p>We can see, that e.g. for Austria and Switzerland the doubling times increase significantly, due to quarantine measures, whereas the increase is smaller in countries like Netherlands and France. In Sweden the spreading of disease even accelerates. … of course, the total amount of tests, respectively the limits of testing are not considered here.</p>
+<pre class="r"><code>title&lt;-paste(&quot;COVID-19 Doubling Times of Confirmed Cases \nData from:&quot;, dateDownloaded)
+caption&lt;-&quot;Source: Johns Hopkins CSSE Novel coronavirus COVID-19 (2019-nCoV)\n data repository: https://github.com/CSSEGISandData/COVID-19&quot;
+
+ggplot(confirmedCasesSelected%&gt;%filter(Date&gt;=&quot;2020-03-17&quot;), aes(x = Date, y = T2))+ 
+  geom_line(color=&quot;blue&quot;, alpha=0.4, cex=1) + 
+  geom_point(color=&quot;blue&quot;, alpha=0.4, cex=2)+
+  geom_smooth(data=confirmedCasesSelected%&gt;%filter(Date&gt;=&quot;2020-03-17&quot;), method = &quot;lm&quot;,formula =y ~x, col=&quot;purple&quot;)+
+  facet_wrap(country_region ~ .)+
+  labs(y = &quot;Cumulative confirmed cases&quot;, title = title, 
+       subtitle = &quot;&quot;, caption = caption) +
+  xlim(c(as.Date(&#39;2020-03-15 00:00:00&#39;, format = &quot;%Y-%m-%d %H:%M:%S&quot;),
+         as.Date(&#39;2020-05-01 00:00:00&#39;, format = &quot;%Y-%m-%d %H:%M:%S&quot;)))+
+  ylim(c(0,30))+
+  theme(legend.position = &quot;none&quot;, legend.title = element_blank())</code></pre>
+<p><img src="/post/2020-03-24-covid19-data-exploration_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>I analysed two periods, the begining and the end of march, separately to show how the doubling time has changed over time. The observed increase in doubling time by approximately a factor of 2 might be considered as the result of the social distancing and quarantine measures, that were intensified in european countries around the 15th of March 2020.</p>
+<div id="doubling-time-beginning-of-march" class="section level5">
+<h5>Doubling time beginning of March</h5>
+<pre class="r"><code>#Beginning of March
+for(i in seq_along(countries)){
+fitdata&lt;-filter(confirmedCasesSelected,country_region == countries[i], Date &gt;= &quot;2020-03-01&quot;, Date &lt;= &quot;2020-03-15&quot;)%&gt;%
+  mutate(logCases=log(cumulative_cases))
+model&lt;-lm(logCases ~ Date, data = fitdata)
+print(paste(countries[i], &quot;: &quot; ,round(log(2)/coef(model)[2],1), &quot;days&quot;))
+}</code></pre>
+<pre><code>## [1] &quot;Italy :  3.6 days&quot;
+## [1] &quot;Germany :  2.6 days&quot;
+## [1] &quot;Switzerland :  2.4 days&quot;
+## [1] &quot;Spain :  2.1 days&quot;
+## [1] &quot;France :  2.6 days&quot;
+## [1] &quot;Netherlands :  2.1 days&quot;
+## [1] &quot;Sweden :  2.1 days&quot;
+## [1] &quot;Austria :  2.3 days&quot;
+## [1] &quot;Belgium :  1.8 days&quot;</code></pre>
+</div>
+<div id="doubling-time-at-the-end-of-march" class="section level5">
+<h5>Doubling time at the end of March</h5>
+<pre class="r"><code>for(i in seq_along(countries)){
+  fitdata&lt;-filter(confirmedCasesSelected,country_region == countries[i], Date &gt;= &quot;2020-03-16&quot;, Date &lt;= dateDownloaded)%&gt;%
+    mutate(logCases=log(cumulative_cases))
+  model&lt;-lm(logCases ~ Date, data = fitdata)
+  print(paste(countries[i], &quot;: &quot; ,round(log(2)/coef(model)[2],1), &quot;days&quot;))
+}</code></pre>
+<pre><code>## [1] &quot;Italy :  18.2 days&quot;
+## [1] &quot;Germany :  12.1 days&quot;
+## [1] &quot;Switzerland :  15.3 days&quot;
+## [1] &quot;Spain :  11.6 days&quot;
+## [1] &quot;France :  10 days&quot;
+## [1] &quot;Netherlands :  10.4 days&quot;
+## [1] &quot;Sweden :  10.5 days&quot;
+## [1] &quot;Austria :  15.1 days&quot;
+## [1] &quot;Belgium :  8.7 days&quot;</code></pre>
+</div>
 </div>
 </div>
 </div>
