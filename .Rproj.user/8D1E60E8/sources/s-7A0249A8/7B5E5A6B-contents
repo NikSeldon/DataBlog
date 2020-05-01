@@ -1,6 +1,7 @@
 baseURL = "/"
 languageCode = "en-us"
 title = "Nik's Data Blog"
+
 theme="m10c"
 
 [params]
