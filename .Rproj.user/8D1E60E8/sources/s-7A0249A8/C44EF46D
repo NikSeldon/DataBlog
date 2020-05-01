@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "3612968068",
+    "hash" : "2714631944",
     "id" : "C44EF46D",
-    "lastKnownWriteTime" : 1588375947,
-    "last_content_update" : 1588375947024,
+    "lastKnownWriteTime" : 1588376023,
+    "last_content_update" : 1588376023746,
     "path" : "~/coding/github_repos/DataBlog/content/post/2020-03-24-covid19-data-exploration.Rmd",
     "project_path" : "content/post/2020-03-24-covid19-data-exploration.Rmd",
     "properties" : {
-        "cursorPosition" : "166,0",
-        "scrollLine" : "158"
+        "cursorPosition" : "10,9",
+        "scrollLine" : "0"
     },
     "read_only" : false,
     "read_only_alternatives" : [
