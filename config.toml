@@ -3,7 +3,7 @@ languageCode = "en-us"
 title = "Nik's Data Blog"
 #git submodule add https://github.com/vaga/hugo-theme-m10c
 theme="hugo-theme-m10c"
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$", "\\.Rproj.user"]
 
 [params]
   author = "Nik Seldon"
