@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588374758015.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "3115C065",
+    "lastKnownWriteTime" : 1588374718,
+    "last_content_update" : 1588374718,
+    "path" : "~/coding/github_repos/DataBlog/.gitmodules",
+    "project_path" : ".gitmodules",
+    "properties" : {
+        "cursorPosition" : "1,22",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "text"
+}
