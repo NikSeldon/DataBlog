@@ -1,0 +1,9 @@
+{
+    "path" : "~/coding/github_repos/DataBlog/content/post",
+    "sortOrder" : [
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

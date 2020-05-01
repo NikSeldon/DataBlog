@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588372851812.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "513484035",
+    "id" : "7B5E5A6B",
+    "lastKnownWriteTime" : 1588372858,
+    "last_content_update" : 1588372858622,
+    "path" : "~/coding/github_repos/DataBlog/config.toml",
+    "project_path" : "config.toml",
+    "properties" : {
+        "cursorPosition" : "23,23",
+        "scrollLine" : "2"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "toml"
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Nik&#39;s Data Blog</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on Nik&#39;s Data Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 24 Mar 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Covid19 data exploration</title>
+      <link>/post/covid19-data-exploration/</link>
+      <pubDate>Tue, 24 Mar 2020 00:00:00 +0000</pubDate>
+      
+      <guid>/post/covid19-data-exploration/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

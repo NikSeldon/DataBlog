@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1588373158143.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "345569649",
+    "id" : "C44EF46D",
+    "lastKnownWriteTime" : 1588373156,
+    "last_content_update" : 1588373156,
+    "path" : "~/coding/github_repos/DataBlog/content/post/2020-03-24-covid19-data-exploration.Rmd",
+    "project_path" : "content/post/2020-03-24-covid19-data-exploration.Rmd",
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
