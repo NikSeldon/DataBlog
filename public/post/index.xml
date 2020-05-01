@@ -17,7 +17,9 @@
       <pubDate>Tue, 24 Mar 2020 00:00:00 +0000</pubDate>
       
       <guid>/post/covid19-data-exploration/</guid>
-      <description></description>
+      <description>COVID-19-Analysis Phase of Exponential Growth in Europe Getting Data The article is an exploration of COVID-19 data. The data is provided by the Johns Hopkins University, Center for Systems Science and Engineering (JHU CSSE). A Github repository that contains daily updated data of
+ confirmed incidence cases cases of death and recovered cases  is available at https://github.com/CSSEGISandData/COVID-19,
+ Required Libraries library(dplyr) library(tidyverse) library(ggplot2) library(lubridate)  Download Data #URLS github&amp;lt;-&amp;quot;https://raw.</description>
     </item>
     
   </channel>

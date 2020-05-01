@@ -11,3 +11,110 @@ tags:
 draft: yes
 ---
 
+## COVID-19-Analysis
+### Phase of Exponential Growth in Europe
+
+#### Getting Data
+
+The article is an exploration of COVID-19 data. The data is provided by the Johns Hopkins University, Center for Systems Science and Engineering (JHU CSSE). A Github repository that contains daily updated data of  
+
+* confirmed incidence cases 
+* cases of death and 
+* recovered cases 
+
+is available at [https://github.com/CSSEGISandData/COVID-19](https://github.com/CSSEGISandData/COVID-19),
+
+```{r message=FALSE, warning=FALSE,echo=FALSE}
+
+
+```
+
+#### Required Libraries
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+library(dplyr)
+library(tidyverse)
+library(ggplot2)
+library(lubridate)
+```
+
+
+#### Download Data
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+#URLS
+github<-"https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/"
+confirmedURL_JHU <-paste(github,"time_series_covid19_confirmed_global.csv?accessType=DOWNLOAD", sep="")
+
+```
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+#DOWNLOAD
+dateDownloaded<-Sys.Date()%>%as.Date("%d-%m-%y")
+pathConfirmed<-paste("../../my_data/covid19/confirmedCases_",dateDownloaded,".csv",sep="")
+#pathDeath<-paste(cwd,"/data/deathsCases_",dateDownloaded,".csv",sep="")
+
+```
+
+
+```{r}
+if(.Platform$OS.type == "windows") {
+  download.file(confirmedURL_JHU,destfile = pathConfirmed, method = 'curl')
+  #download.file(deathURL_JHU,destfile = pathDeath)
+  #download.file(gitGermanyURL,destfile = pathGithubGermany)
+  } else { 
+    download.file(confirmedURL_JHU,destfile = pathConfirmed, method = "curl")
+    #download.file(deathURL_JHU,destfile = pathDeath, method = "curl")
+    #download.file(gitGermanyURL,destfile = pathGithubGermany, method = "curl")
+    }
+```
+
+
+
+```{r echo=TRUE,message=FALSE, warning=FALSE}
+#Read Saved File
+confirmedCases_JHU <- read_csv(pathConfirmed)%>%
+    as_tibble()%>%
+    rename(province = "Province/State", country_region = "Country/Region")%>% 
+    pivot_longer(-c(province, country_region, Lat, Long), names_to = "Date", values_to = "cumulative_cases") %>% 
+    mutate(Date=as.Date(mdy(Date)))%>%
+    select(-c( Lat, Long)) %>%
+    arrange(country_region)
+
+confirmedCasesTmp<-as_tibble()    
+countries<-list("Italy", "Germany", "Switzerland", "Spain", "France", "Netherlands","Sweden","Austria", "Belgium" )
+confirmedCasesSelected<-as_tibble()
+
+for(i in seq_along(countries)){
+  confirmedCasesTmp<-confirmedCases_JHU%>%
+    filter(country_region == countries[i], province==countries[i] | is.na(province))%>%
+    mutate(incident_cases = c(0, diff(cumulative_cases)))%>%
+    mutate(logCases=log(cumulative_cases))%>%
+    mutate(difflogCases=c(0,diff(logCases)))%>%
+    mutate(T2=round(log(2)/difflogCases))
+  confirmedCasesSelected<-rbind(confirmedCasesSelected,confirmedCasesTmp)
+}
+```
+
+### Phase of Exponential Growth
+#### 02-15 to 03-31 2020
+
+Currently, all countries in Europe are in the epidemic phase of were the increase of incidence can be described by a law of exponential growth. epidemiologist may write $I_d=I_0* C^d$, where $I_d, I_0$ are the number of infected people at day $d$ and the initial value of infected people. The factor $C$ contains the average number $E$ of people, an infected person is exposed to each day, and the propability $p$ of each exposure becoming an infection. The exponential growth can be slowed down, when $E$ and/or $p$ can be minimised. Instead of $C$, Physicists would use the exponential base $e$: $I_d=I_0 * e^{(k*d)}$. The logarithmic plot of cumulative incidences $ln(I_d/I_0)=k*d$ yields a straight line, with the slope $k$. Finally the doubling time - the time it reqiures the number of infected people has doubled -  can be calculated: $T_2 = ln(2)/k$. Results are presented below in the section "Doubling Times".
+
+```{r fig.height = 7, fig.width = 10, echo=TRUE, warning=FALSE}
+title<-paste("COVID-19 cummulative number of confirmed cases\n data downloaded from Johns Hopkins University: ", dateDownloaded)
+caption<-"Source: Johns Hopkins CSSE Novel coronavirus COVID-19 (2019-nCoV)\n data repository: https://github.com/CSSEGISandData/COVID-19"
+ggplot(confirmedCasesSelected, aes(x = Date, y = cumulative_cases, colour=country_region))+ 
+  geom_line(color="blue", alpha=0.4, cex=1) + 
+  geom_point(color="blue", alpha=0.4, cex=2)+
+  #  geom_smooth(data=filter(confirmedCasesSelected, Date >= "2020-03-01", Date <= "2020-03-15"), method = "lm",formula =y ~x, col="purple")+
+  #geom_smooth(data=filter(confirmedCasesSelected, Date >= "2020-03-15",Date <= dateDownloaded), method = "lm",formula =y ~x, col="red")+
+  facet_wrap(country_region ~ .)+
+  labs(y = "Cumulative confirmed cases", title = title, 
+       subtitle = "", caption = caption) +
+  xlim(c(as.Date('2020-02-15 00:00:00', format = "%Y-%m-%d %H:%M:%S"),
+         as.Date('2020-05-01 00:00:00', format = "%Y-%m-%d %H:%M:%S")))+
+  scale_y_log10(limits = c(1,2e5))+
+  theme(legend.position = "none", legend.title = element_blank())
+
+```
+

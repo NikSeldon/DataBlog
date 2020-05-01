@@ -5,15 +5,15 @@
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2119682771",
+    "hash" : "0",
     "id" : "7B5E5A6B",
-    "lastKnownWriteTime" : 1588374529,
-    "last_content_update" : 1588374529586,
+    "lastKnownWriteTime" : 1588375103,
+    "last_content_update" : 1588375103765,
     "path" : "~/coding/github_repos/DataBlog/config.toml",
     "project_path" : "config.toml",
     "properties" : {
-        "cursorPosition" : "4,22",
-        "scrollLine" : "0"
+        "cursorPosition" : "6,0",
+        "scrollLine" : "4"
     },
     "read_only" : false,
     "read_only_alternatives" : [
